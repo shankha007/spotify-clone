@@ -18,15 +18,14 @@ function App() {
     const _token = hash.access_token;
 
     if (_token) {
+      spotify.setAccessToken(_token);
+
       dispatch({
         type: "SET_TOKEN",
         token: _token,
       });
 
-      spotify.setAccessToken(_token);
-
       spotify.getMe().then((user) => {
-        console.log(user);
         dispatch({
           type: "SET_USER",
           user,
@@ -39,8 +38,27 @@ function App() {
           playlists,
         });
       });
+
+      spotify.getMyTopArtists().then((response) =>
+        dispatch({
+          type: "SET_TOP_ARTISTS",
+          top_artists: response,
+        })
+      );
+
+      dispatch({
+        type: "SET_SPOTIFY",
+        spotify,
+      });
+
+      spotify.getPlaylist("37i9dQZEVXcOvvWoTz2QYz").then((response) =>
+        dispatch({
+          type: "SET_DISCOVER_WEEKLY",
+          discover_weekly: response,
+        })
+      );
     }
-  }, [dispatch]);
+  }, [token, dispatch]);
 
   return (
     <div className="app">
