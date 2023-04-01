@@ -1,3 +1,7 @@
+## Deployed
+
+https://playful-faun-d8ad4e.netlify.app/
+
 ## Getting Started
 
 First, run the development server:
