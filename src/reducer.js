@@ -3,9 +3,10 @@ export const initialState = {
   playlists: [],
   playing: false,
   spotify: null,
-  discover_weekly: null,
+  selectedPlaylist: null,
   top_artists: null,
   item: null,
+  token: null,
 };
 
 const reducer = (state, action) => {
@@ -40,10 +41,10 @@ const reducer = (state, action) => {
         ...state,
         spotify: action.spotify,
       };
-    case "SET_DISCOVER_WEEKLY":
+    case "SET_PLAYLIST":
       return {
         ...state,
-        discover_weekly: action.discover_weekly,
+        selectedPlaylist: action.selectedPlaylist,
       };
     case "SET_TOP_ARTISTS":
       return {

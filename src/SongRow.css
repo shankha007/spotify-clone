@@ -1,10 +1,9 @@
 .songRow {
-  margin-left: 20px;
   padding: 20px;
-  display: flex;
+  display: grid;
   align-items: center;
-  z-index: 100;
   color: white;
+  grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr;
 }
 
 .songRow:hover {
@@ -14,14 +13,15 @@
 }
 
 .songRow__info {
-  margin-left: 20px;
+  display: flex;
+  gap: 1rem;
 }
 
-.songRow__info > h1 {
+.info > h1 {
   font-size: 16px;
 }
 
-.songRow__info > p {
+.info > p {
   font-size: 14px;
   margin-top: 3px;
   color: gray;

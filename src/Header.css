@@ -4,6 +4,10 @@
   margin-bottom: 30px;
 }
 
+input:focus {
+  outline: none;
+}
+
 .header__left {
   flex: 0.5;
   min-width: 70px;
@@ -18,6 +22,11 @@
 .header__right {
   display: flex;
   align-items: center;
+  justify-content: center;
+  background-color: black;
+  padding: 0.3rem 0.4rem;
+  padding-right: 1rem;
+  border-radius: 2rem;
 }
 
 .header__left > input {

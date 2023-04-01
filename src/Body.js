@@ -2,6 +2,7 @@ import React from "react";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
 
 import "./Body.css";
 import { useDataLayerValue } from "./DataLayer";
@@ -9,12 +10,12 @@ import Header from "./Header";
 import SongRow from "./SongRow";
 
 function Body({ spotify }) {
-  const [{ discover_weekly }, dispatch] = useDataLayerValue();
+  const [{ selectedPlaylist }, dispatch] = useDataLayerValue();
 
   const playPlaylist = (id) => {
     spotify
       .play({
-        context_uri: `spotify:playlist:37i9dQZEVXcOvvWoTz2QYz`,
+        context_uri: `spotify:playlist:${id}`,
       })
       .then((res) => {
         spotify.getMyCurrentPlayingTrack().then((r) => {
@@ -54,11 +55,11 @@ function Body({ spotify }) {
       <Header spotify={spotify} />
 
       <div className="body__info">
-        <img src={discover_weekly?.images[0].url} alt="" />
+        <img src={selectedPlaylist?.images[0].url} alt="" />
         <div className="body__infoText">
           <strong>PLAYLIST</strong>
-          <h2>Discover Weekly</h2>
-          <p>{discover_weekly?.description}</p>
+          <h2>{selectedPlaylist?.name}</h2>
+          <p>{selectedPlaylist?.description}</p>
         </div>
       </div>
 
@@ -66,14 +67,39 @@ function Body({ spotify }) {
         <div className="body__icons">
           <PlayCircleFilledIcon
             className="body__shuffle"
-            onClick={playPlaylist}
+            onClick={() => playPlaylist(selectedPlaylist.id)}
           />
           <FavoriteIcon fontSize="large" />
           <MoreHorizIcon />
         </div>
-        {discover_weekly?.tracks.items.map((item, index) => (
-          <SongRow key={index} track={item.track} playSong={playSong} />
-        ))}
+        <div className="list">
+          <div className="header-row">
+            <div className="col">
+              <span>#</span>
+            </div>
+            <div className="col">
+              <span>TITLE</span>
+            </div>
+            <div className="col">
+              <span>ALBUM</span>
+            </div>
+            <div className="col">
+              <span>
+                <WatchLaterIcon />
+              </span>
+            </div>
+          </div>
+          <div className="tracks">
+            {selectedPlaylist?.tracks.items.map((item, index) => (
+              <SongRow
+                key={index}
+                track={item.track}
+                playSong={playSong}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

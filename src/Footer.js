@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Grid, Slider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
@@ -14,6 +14,7 @@ import { useDataLayerValue } from "./DataLayer";
 
 function Footer({ spotify }) {
   const [{ item, playing }, dispatch] = useDataLayerValue();
+  const [volume, setVolume] = useState(50);
 
   useEffect(() => {
     spotify.getMyCurrentPlaybackState().then((r) => {
@@ -27,7 +28,7 @@ function Footer({ spotify }) {
         item: r.item,
       });
     });
-  }, [spotify, dispatch]);
+  }, [spotify, dispatch, item, playing]);
 
   const handlePlayPause = () => {
     if (playing) {
@@ -73,6 +74,16 @@ function Footer({ spotify }) {
     });
   };
 
+  const setPlayerVolume = async (e) => {
+    setVolume(parseInt(e.target.value));
+    spotify.setVolume(parseInt(e.target.value)).then((r) => {
+      dispatch({
+        type: "SET_ITEM",
+        item: r.item,
+      });
+    });
+  };
+
   return (
     <div className="footer">
       <div className="footer__left">
@@ -96,7 +107,7 @@ function Footer({ spotify }) {
 
       <div className="footer__center">
         <ShuffleIcon className="footer__green" />
-        <SkipPreviousIcon onClick={skipNext} className="footer__icon" />
+        <SkipPreviousIcon onClick={skipPrevious} className="footer__icon" />
         {playing ? (
           <PauseCircleOutlineIcon
             onClick={handlePlayPause}
@@ -110,7 +121,7 @@ function Footer({ spotify }) {
             className="footer__icon"
           />
         )}
-        <SkipNextIcon onClick={skipPrevious} className="footer__icon" />
+        <SkipNextIcon onClick={skipNext} className="footer__icon" />
         <RepeatIcon className="footer__green" />
       </div>
 
@@ -120,10 +131,18 @@ function Footer({ spotify }) {
             <PlaylistPlayIcon />
           </Grid>
           <Grid item>
-            <VolumeDownIcon />
+            <VolumeDownIcon
+              onClick={() => setPlayerVolume({ target: { value: 0 } })}
+            />
           </Grid>
-          <Grid item xs>
-            <Slider aria-labelledby="continuous-slider" />
+          <Grid item>
+            <input
+              type="range"
+              onChange={(e) => setPlayerVolume(e)}
+              min={0}
+              value={volume}
+              max={100}
+            />
           </Grid>
         </Grid>
       </div>

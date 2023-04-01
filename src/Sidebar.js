@@ -7,8 +7,17 @@ import "./Sidebar.css";
 import SidebarOption from "./SidebarOption";
 import { useDataLayerValue } from "./DataLayer";
 
-function Sidebar() {
-  const [{ playlists }] = useDataLayerValue();
+function Sidebar({ spotify }) {
+  const [{ playlists }, dispatch] = useDataLayerValue();
+
+  const openPlayList = (playlistId) => {
+    spotify.getPlaylist(playlistId).then((response) =>
+      dispatch({
+        type: "SET_PLAYLIST",
+        selectedPlaylist: response,
+      })
+    );
+  };
 
   return (
     <div className="sidebar">
@@ -24,10 +33,15 @@ function Sidebar() {
       <br />
       <strong className="sidebar__title">PLAYLISTS</strong>
       <hr />
-
-      {playlists?.items?.map((playlist) => (
-        <SidebarOption key={playlist.name} option={playlist.name} />
-      ))}
+      <div className="sidebar_playlist">
+        {playlists?.items?.map((playlist) => (
+          <SidebarOption
+            key={playlist.name}
+            option={playlist.name}
+            onClick={() => openPlayList(playlist.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 }

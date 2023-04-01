@@ -10,7 +10,7 @@ import { getTokenFromUrl } from "./spotify";
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [{ token }, dispatch] = useDataLayerValue();
+  const [{ token, selectedPlaylist }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -51,14 +51,16 @@ function App() {
         spotify,
       });
 
-      spotify.getPlaylist("37i9dQZEVXcOvvWoTz2QYz").then((response) =>
-        dispatch({
-          type: "SET_DISCOVER_WEEKLY",
-          discover_weekly: response,
-        })
-      );
+      spotify
+        .getPlaylist(selectedPlaylist?.id || "37i9dQZEVXcOvvWoTz2QYz")
+        .then((response) =>
+          dispatch({
+            type: "SET_PLAYLIST",
+            selectedPlaylist: response,
+          })
+        );
     }
-  }, [token, dispatch]);
+  }, [token, dispatch, selectedPlaylist]);
 
   return (
     <div className="app">
