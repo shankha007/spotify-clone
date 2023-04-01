@@ -1,3 +1,17 @@
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm start
+# or
+yarn start
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+To use this clone, you first have to Open Spotify in the Web Browser or the Desktop App. Then, the clone will detect a connected device and you can play any songs you want!
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
